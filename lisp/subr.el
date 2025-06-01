@@ -6002,6 +6002,45 @@ attention to letter-case differences."
          (eq t (compare-strings suffix nil nil
                                 string start-pos nil ignore-case)))))
 
+(defun string-common-prefix (collection &optional ignore-case)
+  "Return the longest common prefix from a COLLECTION of strings.
+
+If IGNORE-CASE is non-nil, letter case is ignored when matching the
+substrings, but no guarantee is made about the letter-case of the return
+value, except that it comes from one of the members of COLLECTION.
+
+This function returns the longest initial substring common to all
+members of COLLECTION.  It returns \"\" when there is no common prefix
+or COLLECTION is nil.  If COLLECTION contains exactly one string then it
+returns that string.
+
+COLLECTION may be a list of strings or any other value supported by
+`try-completion'.
+
+See also `string-try-completion'."
+  (let ((completion-ignore-case ignore-case)
+        (completion-regexp-list nil))
+    ;; `try-completion' is not affected by `completion-styles'.
+    (string-try-completion "" collection)))
+
+(defun string-try-completion (string collection &optional predicate)
+  "Return longest common substring of all completions of STRING in COLLECTION.
+
+This is like `try-completion' except that it always returns a string:
+
+If no possible completions match, the function returns \"\"; if there's
+just one exact match, it returns that string; otherwise it returns the
+longest initial substring common to all possible completions that begin
+with STRING.
+
+See also `string-common-prefix'."
+  (let ((prefix (try-completion string collection predicate)))
+    (if (stringp prefix)
+        prefix
+      (if (eq t prefix)
+          string
+        ""))))
+
 (defun bidi-string-mark-left-to-right (str)
   "Return a string that can be safely inserted in left-to-right text.
 

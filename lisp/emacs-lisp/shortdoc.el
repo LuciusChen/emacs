@@ -385,8 +385,16 @@ A FUNC form can have any number of `:no-eval' (or `:no-value'),
    :eval (reverse "foo"))
   (substring-no-properties
    :eval (substring-no-properties (propertize "foobar" 'face 'bold) 0 3))
+  (string-common-prefix
+   :eval (string-common-prefix '("foobar" "foozot")))
+  (string-try-completion
+   :eval (string-try-completion "foo" '("foobar" "foozot" "gazonk"))
+   :eval (string-try-completion "foo" '("foo"))
+   :eval (string-try-completion "foo" nil))
   (try-completion
-   :eval (try-completion "foo" '("foobar" "foozot" "gazonk")))
+   :eval (try-completion "foo" '("foobar" "foozot" "gazonk"))
+   :eval (try-completion "foo" '("foo"))
+   :eval (try-completion "foo" nil))
   "Unicode Strings"
   (string-glyph-split
    :eval (string-glyph-split "Hello, 👼🏻🧑🏼‍🤝‍🧑🏻"))

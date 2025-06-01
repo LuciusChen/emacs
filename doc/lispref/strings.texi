@@ -248,6 +248,50 @@ equivalent to 0.  Thus, @w{@code{(substring-no-properties
 properties removed.
 @end defun
 
+@cindex common prefix of a collection of strings
+@defun string-common-prefix collection &optional ignore-case
+This function returns the longest initial substring common to all
+members of @var{collection}.  It returns an empty string when there is
+no common prefix or @var{collection} is nil.  If @var{collection}
+contains exactly one string then it returns that string.
+
+@example
+(string-common-prefix '("foobar" "foozot"))
+     @result{} "foo"
+@end example
+
+If @var{ignore-case} is non-nil, letter case is ignored when matching
+the substrings, but no guarantee is made about the letter-case of the
+return value, except that it comes from one of the members of
+@var{collection}.
+
+@var{collection} may be a list of strings or any other value supported
+by @code{try-completion} (@pxref{Basic Completion}).
+@end defun
+
+@cindex string completion
+@defun string-try-completion string collection &optional predicate
+This function returns the longest common substring of all possible
+completions of @var{string} in @var{collection}.
+
+This is like @code{try-completion} (@pxref{Basic Completion}) except
+that it always returns a string.
+
+If no possible completions match, the function returns an empty string;
+if there's just one exact match, it returns that string; otherwise it
+returns the longest initial substring common to all possible completions
+that begin with @var{string}.
+
+@example
+(string-try-completion "foo" '("foobar" "foozot" "gazonk"))
+     @result{} "foo"
+(string-try-completion "foo" '("foo"))
+     @result{} "foo"
+(string-try-completion "foo" nil)
+     @result{} ""
+@end example
+@end defun
+
 @defun concat &rest sequences
 @cindex copying strings
 @cindex concatenating strings

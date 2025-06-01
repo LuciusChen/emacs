@@ -2428,6 +2428,16 @@ It offers a more concise way to create a completion table with metadata.
 ** 'all-completions' and 'unintern' no longer support old calling conventions.
 
 +++
+** New functions 'string-try-completion' and 'string-common-prefix'.
+The former is like 'try-completion', except it always returns a string.
+The latter returns the longest initial substring common to all members
+of a collection of strings (essentially completing an empty string).
+
++++
+** New function.
+This
+
++++
 ** New symbol property 'find-function-type-alist' used by 'find-function' etc.
 Macros that define an object in a way that makes the object's name and
 the macro call site defining the object hard to associate can add an
