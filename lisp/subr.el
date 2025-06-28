@@ -6002,39 +6002,40 @@ attention to letter-case differences."
          (eq t (compare-strings suffix nil nil
                                 string start-pos nil ignore-case)))))
 
-(defun string-common-prefix (collection &optional ignore-case)
+(defun string-common-prefix (collection &optional string ignore-case regexp-list predicate)
   "Return the longest common prefix from a COLLECTION of strings.
+
+Return \"\" if there is no common prefix or if COLLECTION is nil.
+If COLLECTION contains exactly one string, return that string.
 
 If IGNORE-CASE is non-nil, letter case is ignored when matching the
 substrings, but no guarantee is made about the letter-case of the return
 value, except that it comes from one of the members of COLLECTION.
 
-This function returns the longest initial substring common to all
-members of COLLECTION.  It returns \"\" when there is no common prefix
-or COLLECTION is nil.  If COLLECTION contains exactly one string then it
-returns that string.
+The optional arguments STRING, REGEXP-LIST, and PREDICATE all provide
+ways of filtering out unwanted members of COLLECTION before determining
+the longest common prefix for the remaining members.
+
+If STRING is non-nil, this is the minimum required prefix, and any
+members of COLLECTION which do not start with STRING are ignored.
+
+If REGEXP-LIST is non-nil, it is used as `completion-regexp-list',
+and any members of COLLECTION which do not match all of the regular
+expressions in this list are ignored.
+
+If PREDICATE is non-nil, it must be a function to which each member of
+COLLECTION will be passed, and any members for which PREDICATE returns
+nil are ignored.  See `try-completion' for more details.
 
 COLLECTION may be a list of strings or any other value supported by
 `try-completion'.
 
-See also `string-try-completion'."
-  (let ((completion-ignore-case ignore-case)
-        (completion-regexp-list nil))
-    ;; `try-completion' is not affected by `completion-styles'.
-    (string-try-completion "" collection)))
-
-(defun string-try-completion (string collection &optional predicate)
-  "Return longest common substring of all completions of STRING in COLLECTION.
-
-This is like `try-completion' except that it always returns a string:
-
-If no possible completions match, the function returns \"\"; if there's
-just one exact match, it returns that string; otherwise it returns the
-longest initial substring common to all possible completions that begin
-with STRING.
-
-See also `string-common-prefix'."
-  (let ((prefix (try-completion string collection predicate)))
+This function is similar to `try-completion', but always returning a
+string."
+  ;; Note that `try-completion' is not affected by `completion-styles'.
+  (let* ((completion-ignore-case ignore-case)
+         (completion-regexp-list regexp-list)
+         (prefix (try-completion (or string "") collection predicate)))
     (if (stringp prefix)
         prefix
       (if (eq t prefix)

@@ -249,47 +249,60 @@ properties removed.
 @end defun
 
 @cindex common prefix of a collection of strings
+@cindex string completion
 @defun string-common-prefix collection &optional ignore-case
 This function returns the longest initial substring common to all
-members of @var{collection}.  It returns an empty string when there is
-no common prefix or @var{collection} is nil.  If @var{collection}
-contains exactly one string then it returns that string.
+members of @var{collection}.  It returns an empty string if there is no
+common prefix or if @var{collection} is @code{nil}.  If @var{collection}
+contains exactly one string, it returns that string.
 
 @example
 (string-common-prefix '("foobar" "foozot"))
      @result{} "foo"
 @end example
 
-If @var{ignore-case} is non-nil, letter case is ignored when matching
-the substrings, but no guarantee is made about the letter-case of the
-return value, except that it comes from one of the members of
-@var{collection}.
+This is similar to @code{try-completion} (@pxref{Basic Completion}),
+except that it always returns a string.
 
 @var{collection} may be a list of strings or any other value supported
-by @code{try-completion} (@pxref{Basic Completion}).
-@end defun
+by @code{try-completion}.
 
-@cindex string completion
-@defun string-try-completion string collection &optional predicate
-This function returns the longest common substring of all possible
-completions of @var{string} in @var{collection}.
+If @var{ignore-case} is non-@code{nil}, letter case is ignored when
+matching the substrings, but no guarantee is made about the letter-case
+of the return value, except that it comes from one of the members of
+@var{collection}.
 
-This is like @code{try-completion} (@pxref{Basic Completion}) except
-that it always returns a string.
+The optional arguments @var{string}, @var{regexp-list}, and
+@var{predicate} all provide ways of filtering out unwanted members of
+@var{collection} before determining the longest common prefix for the
+remaining members.
 
-If no possible completions match, the function returns an empty string;
-if there's just one exact match, it returns that string; otherwise it
-returns the longest initial substring common to all possible completions
-that begin with @var{string}.
+If @var{string} is non-@code{nil}, this is the minimum required prefix,
+and any members of @var{collection} which do not start with @var{string}
+are ignored.
 
 @example
-(string-try-completion "foo" '("foobar" "foozot" "gazonk"))
-     @result{} "foo"
-(string-try-completion "foo" '("foo"))
-     @result{} "foo"
-(string-try-completion "foo" nil)
+(string-common-prefix '("foobar" "foozot" "gazonk"))
      @result{} ""
+(string-common-prefix '("foobar" "foozot" "gazonk") "f")
+     @result{} "foo"
 @end example
+
+If @var{regexp-list} is non-@code{nil}, it is used as
+@code{completion-regexp-list}, and any members of @var{collection} which
+do not match all of the regular expressions in this list are ignored.
+
+@example
+(string-common-prefix '("foobar" "foozot" "gazonk") "f" nil '("z"))
+     @result{} "foozot"
+@end example
+
+If @var{predicate} is non-@code{nil}, it must be a function to which
+each member of @var{collection} will be passed, and any members for
+which @var{predicate} returns @code{nil} are ignored.  See
+@code{try-completion} (@pxref{Basic Completion}) for details of how the
+@var{predicate} argument is used for different types of
+@var{collection}.
 @end defun
 
 @defun concat &rest sequences
