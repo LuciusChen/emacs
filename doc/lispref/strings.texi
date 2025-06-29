@@ -261,12 +261,6 @@ contains exactly one string, it returns that string.
      @result{} "foo"
 @end example
 
-This is similar to @code{try-completion} (@pxref{Basic Completion}),
-except that it always returns a string.
-
-@var{collection} may be a list of strings or any other value supported
-by @code{try-completion}.
-
 If @var{ignore-case} is non-@code{nil}, letter case is ignored when
 matching the substrings, but no guarantee is made about the letter-case
 of the return value, except that it comes from one of the members of
@@ -288,9 +282,9 @@ are ignored.
      @result{} "foo"
 @end example
 
-If @var{regexp-list} is non-@code{nil}, it is used as
-@code{completion-regexp-list}, and any members of @var{collection} which
-do not match all of the regular expressions in this list are ignored.
+If @var{regexp-list} is non-@code{nil}, any members of @var{collection}
+which do not match all of the regular expressions in this list are
+ignored.
 
 @example
 (string-common-prefix '("foobar" "foozot" "gazonk") "f" nil '("z"))
@@ -299,10 +293,18 @@ do not match all of the regular expressions in this list are ignored.
 
 If @var{predicate} is non-@code{nil}, it must be a function to which
 each member of @var{collection} will be passed, and any members for
-which @var{predicate} returns @code{nil} are ignored.  See
-@code{try-completion} (@pxref{Basic Completion}) for details of how the
-@var{predicate} argument is used for different types of
-@var{collection}.
+which @var{predicate} returns @code{nil} are ignored.  When
+@var{collection} is a list of strings, the function receives a single
+string argument.
+
+@var{collection} may be a list of strings or any other value supported
+by @code{try-completion} (@pxref{Basic Completion}).  The requirements
+for a @var{predicate} function vary depending on the @var{collection}
+type; refer to @code{try-completion} for details of using different
+@var{collection} types.
+
+This function is similar to @code{try-completion}, but always returns a
+string.
 @end defun
 
 @defun concat &rest sequences

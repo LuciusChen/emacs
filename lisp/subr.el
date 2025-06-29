@@ -6019,18 +6019,20 @@ the longest common prefix for the remaining members.
 If STRING is non-nil, this is the minimum required prefix, and any
 members of COLLECTION which do not start with STRING are ignored.
 
-If REGEXP-LIST is non-nil, it is used as `completion-regexp-list',
-and any members of COLLECTION which do not match all of the regular
-expressions in this list are ignored.
+If REGEXP-LIST is non-nil, any members of COLLECTION which do not match
+all of the regular expressions in this list are ignored.
 
 If PREDICATE is non-nil, it must be a function to which each member of
 COLLECTION will be passed, and any members for which PREDICATE returns
-nil are ignored.  See `try-completion' for more details.
+nil are ignored.  When COLLECTION is a list of strings, the function
+receives a single string argument.
 
 COLLECTION may be a list of strings or any other value supported by
-`try-completion'.
+`try-completion'.  The requirements for a PREDICATE function vary
+depending on the COLLECTION type; refer to `try-completion' for details
+of using different COLLECTION types.
 
-This function is similar to `try-completion', but always returning a
+This function is similar to `try-completion', but always returns a
 string."
   ;; Note that `try-completion' is not affected by `completion-styles'.
   (let* ((completion-ignore-case ignore-case)
