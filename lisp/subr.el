@@ -6006,7 +6006,8 @@ attention to letter-case differences."
   "Return the longest common prefix from a COLLECTION of strings.
 
 Return \"\" if there is no common prefix or if COLLECTION is nil.
-If COLLECTION contains exactly one string, return that string.
+If COLLECTION contains (after filtering) exactly one string, return
+that string.
 
 If IGNORE-CASE is non-nil, letter case is ignored when matching the
 substrings, but no guarantee is made about the letter-case of the return

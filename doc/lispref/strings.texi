@@ -254,7 +254,7 @@ properties removed.
 This function returns the longest initial substring common to all
 members of @var{collection}.  It returns an empty string if there is no
 common prefix or if @var{collection} is @code{nil}.  If @var{collection}
-contains exactly one string, it returns that string.
+contains (after filtering) exactly one string, it returns that string.
 
 @example
 (string-common-prefix '("foobar" "foozot"))
