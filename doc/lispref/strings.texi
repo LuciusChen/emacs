@@ -250,7 +250,7 @@ properties removed.
 
 @cindex common prefix of a collection of strings
 @cindex string completion
-@defun string-common-prefix collection &optional ignore-case
+@defun string-common-prefix collection &optional string ignore-case regexp-list predicate
 This function returns the longest initial substring common to all
 members of @var{collection}.  It returns an empty string if there is no
 common prefix or if @var{collection} is @code{nil}.  If @var{collection}
